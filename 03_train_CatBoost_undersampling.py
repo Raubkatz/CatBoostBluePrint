@@ -172,6 +172,12 @@ BAYES_SEARCH_SPACE = {
 # - CatBoost can stop early if it stops improving on the validation set.
 EARLY_STOPPING_ROUNDS = 100
 
+# NEW: skip Bayesian hyperparameter tuning and run ONLY out-of-the-box CatBoost.
+# This means:
+# - BayesSearchCV is not executed at all.
+# - The script still produces the same reports, but “bayes_best” is treated as the ootb run.
+SKIP_BAYES_OPTIMIZATION = True
+
 
 # =========================
 # Helpers
@@ -519,22 +525,26 @@ def main() -> None:
     # - try BAYES_N_ITER different hyperparameter settings
     # - evaluate each setting with BAYES_CV-fold CV on X_tr_r
     # - optimize according to BAYES_SCORING (here: f1)
-    bayes = BayesSearchCV(
-        estimator=base_for_bayes,
-        search_spaces=BAYES_SEARCH_SPACE,
-        n_iter=BAYES_N_ITER,
-        cv=BAYES_CV,
-        scoring=BAYES_SCORING,
-        n_jobs=BAYES_N_JOBS,
-        random_state=RANDOM_STATE,
-        verbose=VERBOSE,
-        refit=True,
-    )
+    if SKIP_BAYES_OPTIMIZATION:
+        print("[BAYES] skipped (SKIP_BAYES_OPTIMIZATION=True).")
+        best_params = {}
+    else:
+        bayes = BayesSearchCV(
+            estimator=base_for_bayes,
+            search_spaces=BAYES_SEARCH_SPACE,
+            n_iter=BAYES_N_ITER,
+            cv=BAYES_CV,
+            scoring=BAYES_SCORING,
+            n_jobs=BAYES_N_JOBS,
+            random_state=RANDOM_STATE,
+            verbose=VERBOSE,
+            refit=True,
+        )
 
-    print("[BAYES] starting BayesSearchCV...")
-    bayes.fit(X_tr_r, y_tr_r)
-    print("[BAYES] done.")
-    best_params = bayes.best_params_
+        print("[BAYES] starting BayesSearchCV...")
+        bayes.fit(X_tr_r, y_tr_r)
+        print("[BAYES] done.")
+        best_params = bayes.best_params_
 
     # -----------------------------
     # 2) Train BOTH models on X_tr only (not X_val)
@@ -558,6 +568,10 @@ def main() -> None:
         use_best_model=True,
         early_stopping_rounds=EARLY_STOPPING_ROUNDS,
     )
+
+    if SKIP_BAYES_OPTIMIZATION:
+        best_bayes_model = ootb_model
+        best_params = {"note": "BayesSearchCV skipped; bayes_best treated as ootb."}
 
     # -----------------------------
     # 3) Evaluate BOTH on validation (raw + balanced repeated)
