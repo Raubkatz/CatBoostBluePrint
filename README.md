@@ -1,4 +1,4 @@
-# CatBoostBluePrint \
+# CatBoostBluePrint
 python==3.8.19 \
 numpy==1.24.3 \
 pandas==2.0.3 \
