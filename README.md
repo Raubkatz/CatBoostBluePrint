@@ -103,7 +103,7 @@ scikit-optimize==0.9.0 \
 matplotlib==3.7.5 \
 seaborn==0.13.2 \
 joblib==1.3.2 \
-tqdm==4.66.1 \
+tqdm==4.66.1 
 
 ---
 
