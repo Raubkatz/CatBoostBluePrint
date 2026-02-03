@@ -62,6 +62,13 @@ FEATURES: List[str] = [ #f_i
     "nrOfFunctions", "ccSum", "ccAvg", "ccStd",
     "scatterSingleScore", "scatterAvg15", "scatterSum15", "scatterMax15", "scatterMed15",
     "scatterTimeAvg", "scatterTimeSum", "scatterTimeMax", "scatterTimeMed",
+    "dok0.004FileBusFactor0.5", "dok0.004FileBusFactor0.6", "dok0.004FileBusFactor0.7",
+    "dok0.004FileBusFactor0.8", "dok0.004FileBusFactor0.9", "dok0.004FileBusFactor1.0",
+    "dok0.004ProjectBusFactor0.5",
+    "ccSum", "ccAvg", "ccMed", "ccMin", "ccMax", "ccStd",
+    "deltaLocToLast", "deltaLocToPrev", "deltaLocToNext",
+    "deltaLocAddedToPrev", "deltaLocRemovedToPrev", "deltaLocReplacedToPrev", "deltaLocModifiedToPrev",
+    "deltaLocAddedToNext", "deltaLocRemovedToNext", "deltaLocReplacedToNext", "deltaLocModifiedToNext",
 ]
 
 # How to handle negative values in numeric feature columns
