@@ -133,14 +133,6 @@ Minimal core pipeline (2026-style):
     - `{TARGET}_predicted`
     - optionally `{TARGET}_predicted_proba`
 
-- `06_apply_best_model_to_regarded_csvs_2026.py`  
-  Batch inference + reporting (classifier, regarded/to_be_tested style):
-  - Loads `best_model.cbm` + `features.json`
-  - Processes **all CSV files** in the configured folder
-  - Writes `*_predicted.csv` and per-file `*_report.txt`
-  - Keeps class-relevant columns side-by-side at the end of the table:
-    - `{TARGET}` (if present), `{TARGET}_predicted`, and (if written) probability / relabeled risk score
-
 ### B) Risk score line inference
 
 - `05b_RiskScore_model_csvs.py`  
@@ -148,16 +140,6 @@ Minimal core pipeline (2026-style):
   - Loads regressor `best_model.cbm` + `features.json`
   - Produces a continuous risk score per row (clipped to `[0,1]`)
   - Adds translated class prediction via threshold
-
-- `06_apply_best_model_to_regarded_csvs_2026_riskscore.py`  
-  Batch inference + reporting (risk score regressor, regarded style):
-  - Loads regressor `best_model.cbm` + `features.json` from the `_riskscore` model folder
-  - Writes `*_predicted.csv` and per-file `*_report.txt`
-  - Appends two columns:
-    - `{TARGET}_predicted` (translated class)
-    - `{TARGET}_predicted_risk_score` (clipped to `[0,1]`)
-  - Orders class-relevant columns side-by-side at the end of the table:
-    - `{TARGET}` (if present), `{TARGET}_predicted`, `{TARGET}_predicted_risk_score`
 
 ---
 
